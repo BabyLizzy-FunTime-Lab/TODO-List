@@ -1,0 +1,7 @@
+You're going to be creating a simple TODO list application in JavaScript using objects.
+All of the HTML and CSS you need has already been written, and you can find it todo.html and todo.css. You don't need to modify these, but you can, should you want to.
+
+A skeleton for the JavaScript code is available in todo.js: you will be working in this file. Some JavaScript code has already been written: same as with the HTML and CSS, you don't need to modify any of this, but you can if you want to.
+Pay attention to the comments and read the hints if you're struck!
+
+You can download the files from http://dl.gaborkozar.me/NYCDA/assignment-todolist/.

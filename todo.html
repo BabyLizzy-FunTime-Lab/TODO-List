@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>TODO list</title>
+    <link rel="stylesheet" type="text/css" href="todo.css">
+    <script type="text/javascript" src="todo.js"></script>
+  </head>
+  <body>
+    <div id="main-container">
+      <h1 id="main-title">TODO list</h1>
+
+      <p class="info">
+        <span id="count-done">0</span>
+        /
+        <span id="count-total">0</span>
+        items are done.
+      </p>
+
+      <ul id="todo-list">
+        <li id="new-item">
+          <input type="text" id="new-item-text" placeholder="New TODO item">
+          <button id="new-item-add">Add</button>
+        </li>
+      </ul>
+
+      <div id="action-bar">
+        <button id="mark-all-done">All done</button>
+        <button id="mark-all-undone">None done</button>
+      </div>
+    </div>
+  </body>
+</html>

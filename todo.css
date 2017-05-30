@@ -1,0 +1,49 @@
+html, body {
+  margin: 0;
+  padding: 0;
+
+  font-size: 16px;
+}
+
+#main-container {
+  width: 40%;
+  min-width: 50em;
+  margin: 0 auto;
+  border: 1px solid black;
+  border-top: 0;
+  background-color: lightcyan;
+  padding: .75em;
+}
+
+#main-title {
+  margin: 0;
+  padding: 0;
+  padding-left: .5em;
+  padding-bottom: .05em;
+  border-bottom: 1px solid blue;
+  margin-bottom: .25em;
+}
+
+#count-done, #count-total {
+  font-weight: bold;
+}
+
+ul#todo-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+ul#todo-list > li {
+  padding: .25em;
+  padding-left: 1em;
+  border-left: 2px solid black;
+}
+
+ul#todo-list > li.done {
+  color: silver;
+  text-decoration: line-through;
+}
+
+ul#todo-list input[type="checkbox"] {
+  margin-right: .5em;
+}
