@@ -2,16 +2,18 @@
 let g_todoList = [];
 
 // This will keep track of the number of list items that are done.
-let doneListItems;
+let doneListItems = 0;
 
+// This is the constructor for the new list item.
 function TodoItem(text) {
   this.text = text;
   this.isDone = false;
   this.element = null;
 }
 
+// This is the addition to the prototype of the new list item. 
 TodoItem.prototype.display = function() {
-  let containerClass = this.text + "Container";
+  let containerClass = this.text + " Container";
 
   // I gave the new list item container a class name for better readability in the browser. 
   let newItemContainer = document.createElement("LI");
@@ -27,11 +29,47 @@ TodoItem.prototype.display = function() {
   let newItemLabel = document.createElement("LABEL");
   newItemContainer.appendChild(newItemLabel);
 
+  // This is the checkbox with eventlistener.
+  let newItemCheckbox = document.createElement("INPUT");
+  newItemCheckbox.setAttribute("type", "checkbox");
+  newItemLabel.appendChild(newItemCheckbox);
+
+  // José: Check why this works!!
+  let todoItem = this;
+  newItemCheckbox.addEventListener("click",
+    function (event) {
+      todoItem.toggleDone();
+    }
+  );
+
+  // this is the span.
   let newItemSpan = document.createElement("SPAN");
   newItemSpan.innerText = this.text;
   newItemLabel.appendChild(newItemSpan);
 };
 
+// This function strikes items of the list and sets how many items have been done.
+TodoItem.prototype.toggleDone = function(event) {
+  let checkbtn = this.element.querySelector("input[type='checkbox']").checked;
+  let countDoneItems = document.getElementById("count-done");
+
+  // If the checkbox is checked this will cross out the item and add 1 to the done items counter.
+  if (checkbtn === true) {
+    this.element.classList.add("done");
+    doneListItems += 1;
+    countDoneItems.innerText = doneListItems;
+  } 
+
+  // If the checkbox is not checked and the item is crossed out, 
+  // this will uncross the item and substract 1 from the done items counter.
+  if (checkbtn === false && this.element.classList.contains("done")) {
+    this.element.classList.remove("done");
+    doneListItems -= 1;
+    countDoneItems.innerText = doneListItems;
+  }
+};
+
+// This function creates/displays the new list Item object and sets the total number of items. 
 function addNewItem(text) {
   // each new list item is a new object.
   let newListItem = new TodoItem(text);
@@ -39,8 +77,14 @@ function addNewItem(text) {
   // each new list item is pushed into the g_todoList variable array.
   g_todoList.push(newListItem);
 
+  // This sets the total amount of list items on screen.
+  let countTotal = document.getElementById("count-total");
+  countTotal.innerText = g_todoList.length;
+
   // The new object is now made visible with it's own display method. 
   newListItem.display();
+
+  // newListItem.toggleDone();
 }
 
 
@@ -59,14 +103,16 @@ document.addEventListener("DOMContentLoaded",
       addNewItem(text);
     }
 
-    // The "add" button
+    // The "add" button and it's functionality.
     document.getElementById("new-item-add").addEventListener("click", 
       function(event) {
         let item_text = document.getElementById("new-item-text").value;
         addNewItem(item_text);
+
       }
     );
 
+    console.log(g_todoList);
   }
 );
 
