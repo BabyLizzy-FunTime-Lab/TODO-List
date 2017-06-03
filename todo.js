@@ -11,52 +11,62 @@ function TodoItem(text) {
 }
 
 TodoItem.prototype.display = function() {
-  let containerId = this.text + "Container";
-  let labelId = this.text + "Label";
-  let spanId = this.text + "Span";
+  let containerClass = this.text + "Container";
 
+  // I gave the new list item container a class name for better readability in the browser. 
   let newItemContainer = document.createElement("LI");
-  newItemContainer.setAttribute("id", containerId);
+  newItemContainer.setAttribute("class", containerClass);
 
+  // this.element is overwriten to include the new list item container. 
   this.element = newItemContainer;
 
-  // This will add this.element to the list - you don't need to modify this.
+  // This adds the new list element (newItemContainer) above the input box.
   document.getElementById("todo-list").insertBefore(this.element, document.getElementById("new-item"));
 
+  // Now that the new list item cobtainer exist in the DOM we can load it with a label and a span.
   let newItemLabel = document.createElement("LABEL");
-  newItemLabel.setAttribute("id", labelId);
-  document.getElementById(containerId).appendChild(newItemLabel);
+  newItemContainer.appendChild(newItemLabel);
 
   let newItemSpan = document.createElement("SPAN");
-  newItemSpan.setAttribute("id", spanId);
   newItemSpan.innerText = this.text;
-  document.getElementById(labelId).appendChild(newItemSpan);
-
+  newItemLabel.appendChild(newItemSpan);
 };
 
 function addNewItem(text) {
-  // each item is an object.
+  // each new list item is a new object.
   let newListItem = new TodoItem(text);
 
+  // each new list item is pushed into the g_todoList variable array.
   g_todoList.push(newListItem);
-  console.log(g_todoList);
 
+  // The new object is now made visible with it's own display method. 
   newListItem.display();
 }
 
 
 
-document.addEventListener("DOMContentLoaded", function() {
 
-  // The "add" button
-  document.getElementById("new-item-add").addEventListener("click", function(event) {
-    console.log("add button works");
+const InitialItems = [
+  "Step 1: buy potatoes",
+  "Step 2: take over the world",
+  "Step 3: there is no step 3"
+];
 
-    let item_text = document.getElementById("new-item-text").value;
-    console.log(item_text);
+document.addEventListener("DOMContentLoaded", 
+  function() {
+    // This renders the first 3 list items in the InitialItems constant.
+    for (let text of InitialItems) {
+      addNewItem(text);
+    }
 
-    addNewItem(item_text);
+    // The "add" button
+    document.getElementById("new-item-add").addEventListener("click", 
+      function(event) {
+        let item_text = document.getElementById("new-item-text").value;
+        addNewItem(item_text);
+      }
+    );
 
-  });
-});
+  }
+);
 
