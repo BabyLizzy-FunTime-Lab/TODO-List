@@ -7,7 +7,7 @@ let doneListItems = 0;
 // This is the constructor for the new list item.
 function TodoItem(text) {
   this.text = text;
-  this.isDone = false;
+  this.isDone = false;  // This attribute is not essential for my code but I did use it to practice a bit.
   this.element = null;
 }
 
@@ -34,7 +34,9 @@ TodoItem.prototype.display = function() {
   newItemCheckbox.setAttribute("type", "checkbox");
   newItemLabel.appendChild(newItemCheckbox);
 
-  // José: Check why this works!!
+  // This event listener waits for the checkbox to be clicked.
+  // A new varaible is made for this because within the event listener "this" points to
+  // the element that was clicked and not the TodoItem object. 
   let todoItem = this;
   newItemCheckbox.addEventListener("click",
     function (event) {
@@ -56,6 +58,7 @@ TodoItem.prototype.toggleDone = function(event) {
   // If the checkbox is checked this will cross out the item and add 1 to the done items counter.
   if (checkbtn === true) {
     this.element.classList.add("done");
+    this.isDone = true; // My code doesn't actually need this line. 
     doneListItems += 1;
     countDoneItems.innerText = doneListItems;
   } 
@@ -64,6 +67,7 @@ TodoItem.prototype.toggleDone = function(event) {
   // this will uncross the item and substract 1 from the done items counter.
   if (checkbtn === false && this.element.classList.contains("done")) {
     this.element.classList.remove("done");
+    this.isDone = false; // My code doesn't actually need this line.
     doneListItems -= 1;
     countDoneItems.innerText = doneListItems;
   }
@@ -83,12 +87,60 @@ function addNewItem(text) {
 
   // The new object is now made visible with it's own display method. 
   newListItem.display();
+};
 
-  // newListItem.toggleDone();
+// This checks all the items as done or noy done.
+function markAll(newIsDone) {
+  // This is what happends when the "all done" button is clicked.
+  if (newIsDone === "done") {
+    // The done items counter gets maxed out.
+    let countDoneItems = document.getElementById("count-done");
+    doneListItems = g_todoList.length;
+    countDoneItems.innerText = doneListItems;
+
+    // check all checkboxes.
+    let allCheckboxes = document.querySelectorAll("input[type='checkbox']");
+    for (var i = 0; i < allCheckboxes.length; i++) {
+      allCheckboxes[i].checked = true;
+    };
+
+    // cross out all items
+    let allListItems = document.querySelectorAll("li.Container");
+    for (var i = 0; i < allListItems.length; i++) {
+      allListItems[i].classList.add("done");
+    };
+
+    // This changes all the isDone attributes of the TodoItem objects to true.
+    for (var i = 0; i < g_todoList.length; i++) {
+      g_todoList[i].isDone = true;
+    };
+  };
+
+  // This is what happends when the "none done" button is clicked.
+  if (newIsDone === "undone") {
+    // The done items counter is set to 0. 
+    let countDoneItems = document.getElementById("count-done");
+    doneListItems = 0;
+    countDoneItems.innerText = doneListItems;
+
+    // all the checkboxes get unchecked.
+    let allCheckboxes = document.querySelectorAll("input[type='checkbox']");
+    for (var i = 0; i < allCheckboxes.length; i++) {
+      allCheckboxes[i].checked = false;
+    };
+
+    // This uncrosses all the items that were crossed out.
+    let allListItems = document.querySelectorAll("li.Container");
+    for (var i = 0; i < allListItems.length; i++) {
+      allListItems[i].classList.remove("done");
+    };
+
+    // This changes all the isDone attributes of the TodoItem objects to false.
+    for (var i = 0; i < g_todoList.length; i++) {
+      g_todoList[i].isDone = false;
+    };
+  };
 }
-
-
-
 
 const InitialItems = [
   "Step 1: buy potatoes",
@@ -108,11 +160,23 @@ document.addEventListener("DOMContentLoaded",
       function(event) {
         let item_text = document.getElementById("new-item-text").value;
         addNewItem(item_text);
-
       }
     );
 
-    console.log(g_todoList);
+    // The "all done" button.
+    document.getElementById("mark-all-done").addEventListener("click",
+      function (event) {
+        markAll("done");
+      }
+    );
+
+    // The "none done" button.
+    document.getElementById("mark-all-undone").addEventListener("click",
+      function (event) {
+        markAll("undone");
+      }
+    );    
+    
   }
 );
 
